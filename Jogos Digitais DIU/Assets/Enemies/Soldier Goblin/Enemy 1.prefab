@@ -231,7 +231,7 @@ MonoBehaviour:
   animator: {fileID: 8669144675847237664}
   Hitbox: {fileID: 1179149458734171187}
   checkRange: {fileID: 8974149524569046067}
-  alcanceAtaque: 0.5
+  alcanceAtaque: 0.7
   playerLayer:
     serializedVersion: 2
     m_Bits: 256

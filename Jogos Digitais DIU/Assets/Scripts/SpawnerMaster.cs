@@ -20,7 +20,7 @@ public class SpawnerMaster : MonoBehaviour
     private GameObject[] spawners;
 
     [SerializeField]
-    private int enemyHealth;
+    private float enemyHealth;
     private int spawnCount = 0;
 
     void Start(){

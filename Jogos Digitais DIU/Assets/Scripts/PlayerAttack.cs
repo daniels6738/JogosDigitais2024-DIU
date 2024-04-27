@@ -50,7 +50,8 @@ public class PlayerAttack : MonoBehaviour
         
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
-            enemy.GetComponent<BasicEnemyScript>().TakeDamage(1);
+            enemy.GetComponent<BasicEnemyScript>().TakeDamage(0.5f);
+            Debug.Log("acertei");
         }
         Collider2D[] breakablesAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, breakableLayer);
         foreach(Collider2D breakable in breakablesAcertados){
@@ -61,7 +62,7 @@ public class PlayerAttack : MonoBehaviour
     void RoundHouse(){
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
-            enemy.GetComponent<BasicEnemyScript>().TakeDamage(2);
+            enemy.GetComponent<BasicEnemyScript>().TakeDamage(1);
         }
         Collider2D[] breakablesAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, breakableLayer);
         foreach(Collider2D breakable in breakablesAcertados){

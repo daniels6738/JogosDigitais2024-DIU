@@ -15,7 +15,7 @@ public class SpawnEnemy1 : MonoBehaviour
 
   
 
-    public void SpawnEnemy(GameObject enemy, int health){
+    public void SpawnEnemy(GameObject enemy, float health){
         GameObject newEnemy = Instantiate(enemy, transform.position, transform.rotation);
         newEnemy.GetComponent<BasicEnemyScript>().SetHealth(health);
     }

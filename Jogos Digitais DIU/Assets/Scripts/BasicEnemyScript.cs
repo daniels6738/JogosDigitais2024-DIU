@@ -6,7 +6,7 @@ public class BasicEnemyScript : MonoBehaviour
 {
     private GameObject player;
     [SerializeField]
-    private int health;
+    private float health;
     [SerializeField]
     private float speed;
     private float animSpeed;
@@ -79,7 +79,7 @@ public class BasicEnemyScript : MonoBehaviour
         Invoke("temp", 0.6f);
     }
 
-    public void TakeDamage(int dmg){
+    public void TakeDamage(float dmg){
         isHurting = true;
         Invoke(nameof(StopHurting), 0.4f);
         health -= dmg;
@@ -108,7 +108,7 @@ public class BasicEnemyScript : MonoBehaviour
     void DownStrike(){
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, playerLayer);
         foreach(Collider2D player in inimigosAcertados){
-            if(!isHurting)player.GetComponent<PlayerMovement>().TakeDamage(1, gameObject);
+            if(!isHurting && health > 0)player.GetComponent<PlayerMovement>().TakeDamage(1, gameObject);
         }
     }
 
@@ -120,7 +120,7 @@ public class BasicEnemyScript : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SetHealth(int i){
+    public void SetHealth(float i){
         health = i;
     }
 }
