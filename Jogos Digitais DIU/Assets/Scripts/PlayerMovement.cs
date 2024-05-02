@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour {
 	private SpriteRenderer sp;
 	private int gokuCount;
 	public AudioSource[] goku;
+	public SpecialBarScript bar;
 	
 	// Update is called once per frame
 
@@ -68,7 +69,7 @@ public class PlayerMovement : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Q)){
             blocking = true;
 			sp.material.color = new Color(0,0,0,0.7f);
-            Invoke(nameof(EndBlock), 0.5f);
+            Invoke(nameof(EndBlock), 0.3f);
 
         }
 
@@ -93,8 +94,9 @@ public class PlayerMovement : MonoBehaviour {
 				
 			} else {transform.Translate(-2f,0f,0f);}
 			
-			attacker.GetComponent<BasicEnemyScript>().TakeDamage(5);
+			attacker.GetComponent<BasicEnemyScript>().TakeDamage(gameObject.GetComponent<PlayerAttack>().dmg*10);
 			UpdateGoku();
+			bar.IncreaseVal();
 
 			
 		}
@@ -120,5 +122,4 @@ public class PlayerMovement : MonoBehaviour {
 			gokuCount = 0;
 		}
 	}
-	
 }

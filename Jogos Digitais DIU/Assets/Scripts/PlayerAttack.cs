@@ -17,9 +17,12 @@ public class PlayerAttack : MonoBehaviour
     public float attackRatePunch = 2.5f;
     public float attackRateKick = 1.7f;
     float nextAttackTime = 0f;
+    public SpecialBarScript bar;
+    public float dmg;
     void Start()
     {
         animator = GetComponent<Animator>();
+        dmg = 0.5f;
     }
 
     
@@ -41,6 +44,11 @@ public class PlayerAttack : MonoBehaviour
             }
             
         }
+        if(Input.GetKeyDown(KeyCode.E)){
+            if(bar.slider.value == bar.maxVal){
+                Special();
+            }
+        }
 
         
         
@@ -50,8 +58,7 @@ public class PlayerAttack : MonoBehaviour
         
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
-            enemy.GetComponent<BasicEnemyScript>().TakeDamage(0.5f);
-            Debug.Log("acertei");
+            enemy.GetComponent<BasicEnemyScript>().TakeDamage(dmg);
         }
         Collider2D[] breakablesAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, breakableLayer);
         foreach(Collider2D breakable in breakablesAcertados){
@@ -62,7 +69,7 @@ public class PlayerAttack : MonoBehaviour
     void RoundHouse(){
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
-            enemy.GetComponent<BasicEnemyScript>().TakeDamage(1);
+            enemy.GetComponent<BasicEnemyScript>().TakeDamage(dmg*2);
         }
         Collider2D[] breakablesAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, breakableLayer);
         foreach(Collider2D breakable in breakablesAcertados){
@@ -87,5 +94,18 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(Hitbox.position, alcanceAtaque);
     }
 
+    public void IncreaseVal(){
+		bar.IncreaseVal();
+	}
+	
+	void Special(){
+        animator.SetTrigger("Special");
+        Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
+        foreach(Collider2D enemy in inimigosAcertados){
+            enemy.GetComponent<BasicEnemyScript>().TakeDamage(100000f);
+        }
+        dmg += 0.5f;
+        bar.SetVal(0);
+    }
     
 }

@@ -80,8 +80,9 @@ public class BasicEnemyScript : MonoBehaviour
     }
 
     public void TakeDamage(float dmg){
+        StopAllCoroutines();
         isHurting = true;
-        Invoke(nameof(StopHurting), 0.4f);
+        StartCoroutine(StopHurting());
         health -= dmg;
         animator.SetTrigger("Hurt");
         if(health <= 0){
@@ -108,11 +109,12 @@ public class BasicEnemyScript : MonoBehaviour
     void DownStrike(){
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, playerLayer);
         foreach(Collider2D player in inimigosAcertados){
-            if(!isHurting && health > 0)player.GetComponent<PlayerMovement>().TakeDamage(1, gameObject);
+            if(isHurting == false && health > 0)player.GetComponent<PlayerMovement>().TakeDamage(1, gameObject);
         }
     }
 
-    void StopHurting(){
+    IEnumerator StopHurting(){
+        yield return new WaitForSeconds(0.7f);
         isHurting = false;
     }
 
