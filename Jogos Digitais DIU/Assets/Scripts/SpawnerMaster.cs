@@ -35,7 +35,7 @@ public class SpawnerMaster : MonoBehaviour
     
     public IEnumerator SpawnEnemy(float interval, GameObject enemy){
         yield return new WaitForSeconds(interval);
-        enemyHealth = 2 + (spawnCount/3);
+        enemyHealth = 2 + (spawnCount/4);
         spawnCount++;
         spawners[ran.Next(0,spawners.Length)].GetComponent<SpawnEnemy1>().SpawnEnemy(enemy, enemyHealth);
         StartCoroutine(SpawnEnemy(interval, enemy));

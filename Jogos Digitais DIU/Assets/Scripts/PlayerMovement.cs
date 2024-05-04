@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour {
 	private int gokuCount;
 	public AudioSource[] goku;
 	public SpecialBarScript bar;
+	private bool isPaused;
 	
 	// Update is called once per frame
 
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		sp = GetComponent<SpriteRenderer>();
 		gokuCount = 0;
+		isPaused = false;
 	}
 	void Update () {
 		
@@ -58,8 +60,14 @@ public class PlayerMovement : MonoBehaviour {
 			crouch = false;
 		}
 
-		if(Input.GetKeyDown(KeyCode.Escape)){ //só um jeito facil de parar o jogo
-			UnityEditor.EditorApplication.isPlaying = false;
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			if(isPaused == false){ 
+				isPaused = true;
+				Time.timeScale = 0f;
+			} else {
+				Time.timeScale = 1f;
+				isPaused = false;
+			}
 		}
 
 		if(Input.GetKeyDown(KeyCode.T)){ //TODO testar
@@ -69,7 +77,7 @@ public class PlayerMovement : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Q)){
             blocking = true;
 			sp.material.color = new Color(0,0,0,0.7f);
-            Invoke(nameof(EndBlock), 0.3f);
+            Invoke(nameof(EndBlock), 0.25f);
 
         }
 
@@ -86,7 +94,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	public void TakeDamage(int i, GameObject attacker){
 		if(!blocking){
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			/* SceneManager.LoadScene(SceneManager.GetActiveScene().name); */
+			SceneManager.LoadScene(0);
 		} else{
 			goku[gokuCount].Play();
 			if(gameObject.GetComponent<CharacterController2D>().isFacingRight()){
@@ -106,10 +115,6 @@ public class PlayerMovement : MonoBehaviour {
 		health += i;
 		if(health >= hpLimit) health = hpLimit;
 	} */
-
-	private void ResetOnDeath(){
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
 
 	void EndBlock(){
 		sp.material.color = Color.white;

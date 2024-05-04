@@ -19,6 +19,7 @@ public class PlayerAttack : MonoBehaviour
     float nextAttackTime = 0f;
     public SpecialBarScript bar;
     public float dmg;
+    public AudioSource specialSound;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -99,13 +100,17 @@ public class PlayerAttack : MonoBehaviour
 	}
 	
 	void Special(){
-        animator.SetTrigger("Special");
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
             enemy.GetComponent<BasicEnemyScript>().TakeDamage(100000f);
         }
-        dmg += 0.5f;
-        bar.SetVal(0);
+        if(inimigosAcertados.Length > 0){
+            animator.SetTrigger("Special");
+            dmg += 0.5f;
+            bar.SetVal(0);
+            specialSound.Play();
+        }
+        
     }
     
 }

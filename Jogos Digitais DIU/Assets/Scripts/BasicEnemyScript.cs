@@ -54,33 +54,43 @@ public class BasicEnemyScript : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if(coll.CompareTag("Player") && Time.time >= nextAttackTime){
+        if(coll.CompareTag("Player")){
+            StopCoroutine(startWalking());
             canMove = false;
             animator.SetBool("canMove", false);
-            nextAttackTime = Time.time + 1.5f;
-            animator.SetTrigger("Attack");
-            if(!isHurting && health > 0){
-                Invoke("DownStrike", 0.6f);
+            if(Time.time >= nextAttackTime){
+                nextAttackTime = Time.time + 1.5f;
+                animator.SetTrigger("Attack");
+                if(!isHurting && health > 0){
+                    Invoke("DownStrike", 0.6f);
+                }
             }
+            
         }
     }
 
     void OnTriggerStay2D(Collider2D coll){
-        if(coll.CompareTag("Player") && Time.time >= nextAttackTime){
-            nextAttackTime = Time.time + 1.5f;
-            animator.SetTrigger("Attack");
-            if(!isHurting && health > 0){
-                Invoke("DownStrike", 0.6f);
+        if(coll.CompareTag("Player")){
+            StopCoroutine(startWalking());
+            canMove = false;
+            animator.SetBool("canMove", false);
+            if(Time.time >= nextAttackTime){
+                nextAttackTime = Time.time + 1.5f;
+                animator.SetTrigger("Attack");
+                if(!isHurting && health > 0){
+                    Invoke("DownStrike", 0.6f);
+                }
             }
+            
         }
     }
 
     void OnTriggerExit2D(Collider2D coll){
-        Invoke("temp", 0.6f);
+        StartCoroutine(startWalking());
     }
 
     public void TakeDamage(float dmg){
-        StopAllCoroutines();
+        StopCoroutine(StopHurting());
         isHurting = true;
         StartCoroutine(StopHurting());
         health -= dmg;
@@ -109,13 +119,19 @@ public class BasicEnemyScript : MonoBehaviour
     void DownStrike(){
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, playerLayer);
         foreach(Collider2D player in inimigosAcertados){
-            if(isHurting == false && health > 0)player.GetComponent<PlayerMovement>().TakeDamage(1, gameObject);
+            if(isHurting == false && health > 0 && !canMove)player.GetComponent<PlayerMovement>().TakeDamage(1, gameObject);
         }
     }
 
     IEnumerator StopHurting(){
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.5f);
         isHurting = false;
+    }
+
+    IEnumerator startWalking(){
+        yield return new WaitForSeconds(0.6f);
+        canMove = true;
+        animator.SetBool("canMove", true);
     }
 
     void Vanish(){

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/2D Platformer Controller/Scenes/Demo.unity
-    guid: 00000000000000000000000000000000
+    path: Assets/Menu.unity
+    guid: 8741f63f2ed12194d8448adcc5a09bfc
+  - enabled: 1
+    path: Assets/Main.unity
+    guid: 548efbe8196c7bb41a94d25d70cf82e6
   m_configObjects: {}
