@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour {
 	public AudioSource[] goku;
 	public SpecialBarScript bar;
 	private bool isPaused;
+	public GameObject score;
 	
 	// Update is called once per frame
 
@@ -103,9 +104,10 @@ public class PlayerMovement : MonoBehaviour {
 				
 			} else {transform.Translate(-2f,0f,0f);}
 			
-			attacker.GetComponent<BasicEnemyScript>().TakeDamage(gameObject.GetComponent<PlayerAttack>().dmg*10);
+			attacker.GetComponent<BasicEnemyScript>().TakeDamage(gameObject.GetComponent<PlayerAttack>().dmg*4);
 			UpdateGoku();
 			bar.IncreaseVal();
+			score.GetComponent<Score>().ScorePoints(200);
 
 			
 		}

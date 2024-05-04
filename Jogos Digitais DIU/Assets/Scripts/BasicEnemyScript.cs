@@ -98,6 +98,7 @@ public class BasicEnemyScript : MonoBehaviour
         if(health <= 0){
             //player.GetComponent<PlayerMovement>().Heal(2);
             animator.SetBool("Dead",true);
+            gameObject.layer = LayerMask.NameToLayer("Dead");
             GetComponent<Collider2D>().enabled = false;
             GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX;
             this.enabled = false;

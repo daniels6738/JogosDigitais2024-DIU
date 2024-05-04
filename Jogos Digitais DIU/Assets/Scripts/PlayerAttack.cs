@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -20,6 +21,7 @@ public class PlayerAttack : MonoBehaviour
     public SpecialBarScript bar;
     public float dmg;
     public AudioSource specialSound;
+    public GameObject score;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -47,7 +49,12 @@ public class PlayerAttack : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.E)){
             if(bar.slider.value == bar.maxVal){
-                Special();
+                SpecialAttack();
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.LeftShift)){
+            if(bar.slider.value == bar.maxVal){
+                Strenghten();
             }
         }
 
@@ -60,6 +67,7 @@ public class PlayerAttack : MonoBehaviour
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
             enemy.GetComponent<BasicEnemyScript>().TakeDamage(dmg);
+            score.GetComponent<Score>().ScorePoints(20);
         }
         Collider2D[] breakablesAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, breakableLayer);
         foreach(Collider2D breakable in breakablesAcertados){
@@ -71,6 +79,7 @@ public class PlayerAttack : MonoBehaviour
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
             enemy.GetComponent<BasicEnemyScript>().TakeDamage(dmg*2);
+            score.GetComponent<Score>().ScorePoints(30);
         }
         Collider2D[] breakablesAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, breakableLayer);
         foreach(Collider2D breakable in breakablesAcertados){
@@ -94,23 +103,31 @@ public class PlayerAttack : MonoBehaviour
 
         Gizmos.DrawWireSphere(Hitbox.position, alcanceAtaque);
     }
-
-    public void IncreaseVal(){
-		bar.IncreaseVal();
-	}
 	
-	void Special(){
+	void SpecialAttack(){
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, enemyLayer);
         foreach(Collider2D enemy in inimigosAcertados){
             enemy.GetComponent<BasicEnemyScript>().TakeDamage(100000f);
+            score.GetComponent<Score>().ScorePoints(150);
         }
         if(inimigosAcertados.Length > 0){
             animator.SetTrigger("Special");
-            dmg += 0.5f;
             bar.SetVal(0);
             specialSound.Play();
+
         }
         
+    }
+
+    void Strenghten(){
+        dmg += 0.5f;
+        bar.SetVal(0);
+        GetComponent<SpriteRenderer>().material.color = Color.yellow;
+        Invoke("NormalColor", 0.3f);
+    }
+
+    void NormalColor(){
+        GetComponent<SpriteRenderer>().material.color = Color.white;
     }
     
 }
