@@ -62,7 +62,7 @@ public class BasicEnemyScript : MonoBehaviour
                 nextAttackTime = Time.time + 1.5f;
                 animator.SetTrigger("Attack");
                 if(!isHurting && health > 0){
-                    Invoke("DownStrike", 0.6f);
+                    StartCoroutine(DownStrike());
                 }
             }
             
@@ -78,7 +78,7 @@ public class BasicEnemyScript : MonoBehaviour
                 nextAttackTime = Time.time + 1.5f;
                 animator.SetTrigger("Attack");
                 if(!isHurting && health > 0){
-                    Invoke("DownStrike", 0.6f);
+                    StartCoroutine(DownStrike());
                 }
             }
             
@@ -90,8 +90,10 @@ public class BasicEnemyScript : MonoBehaviour
     }
 
     public void TakeDamage(float dmg){
+        StopCoroutine(DownStrike());
         StopCoroutine(StopHurting());
         isHurting = true;
+        //GetComponent<SpriteRenderer>().color = Color.red; //debug
         StartCoroutine(StopHurting());
         health -= dmg;
         animator.SetTrigger("Hurt");
@@ -113,7 +115,8 @@ public class BasicEnemyScript : MonoBehaviour
     }
 
 
-    void DownStrike(){
+    IEnumerator DownStrike(){
+        yield return new WaitForSeconds(0.6f);
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, playerLayer);
         foreach(Collider2D player in inimigosAcertados){
             if(isHurting == false && health > 0 && !canMove)player.GetComponent<PlayerMovement>().TakeDamage(1, gameObject);
@@ -121,7 +124,8 @@ public class BasicEnemyScript : MonoBehaviour
     }
 
     IEnumerator StopHurting(){
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.6f);
+        //GetComponent<SpriteRenderer>().color = Color.white; //debug
         isHurting = false;
     }
 
