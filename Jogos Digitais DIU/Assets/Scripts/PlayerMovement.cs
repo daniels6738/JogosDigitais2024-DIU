@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour {
 	public SpecialBarScript bar;
 	private bool isPaused;
 	public GameObject score;
+	public GameObject pauseScreen;
 	
 	// Update is called once per frame
 
@@ -65,9 +66,11 @@ public class PlayerMovement : MonoBehaviour {
 			if(isPaused == false){ 
 				isPaused = true;
 				Time.timeScale = 0f;
+				pauseScreen.SetActive(true);
 			} else {
 				Time.timeScale = 1f;
 				isPaused = false;
+				pauseScreen.SetActive(false);
 			}
 		}
 
@@ -96,7 +99,8 @@ public class PlayerMovement : MonoBehaviour {
 	public void TakeDamage(int i, GameObject attacker){
 		if(!blocking){
 			/* SceneManager.LoadScene(SceneManager.GetActiveScene().name); */
-			SceneManager.LoadScene(0);
+			SceneManager.LoadScene(2);
+			StopAllCoroutines(); //Tava recebendo um log dizendo que coroutina n podia iniciar pois o inimigo não estava ativo
 		} else{
 			goku[gokuCount].Play();
 			if(gameObject.GetComponent<CharacterController2D>().isFacingRight()){
@@ -107,7 +111,7 @@ public class PlayerMovement : MonoBehaviour {
 			attacker.GetComponent<BasicEnemyScript>().TakeDamage(gameObject.GetComponent<PlayerAttack>().dmg*4);
 			UpdateGoku();
 			bar.IncreaseVal();
-			score.GetComponent<Score>().ScorePoints(200);
+			score.GetComponent<Score>().ScorePoints(250);
 
 			
 		}
@@ -115,7 +119,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	/* public void Heal(int i){
 		health += i;
-		if(health >= hpLimit) health = hpLimit;
+		if(health >= hpLimit) health = hpLimit; //tornei o jogo em um em que um hit significa derrota
 	} */
 
 	void EndBlock(){

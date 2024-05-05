@@ -112,10 +112,6 @@ public class BasicEnemyScript : MonoBehaviour
         Gizmos.DrawWireSphere(Hitbox.position, alcanceAtaque);
     }
 
-    void temp(){
-        canMove = true;
-        animator.SetBool("canMove", true);
-    }
 
     void DownStrike(){
         Collider2D[] inimigosAcertados = Physics2D.OverlapCircleAll(Hitbox.position, alcanceAtaque, playerLayer);
@@ -125,7 +121,7 @@ public class BasicEnemyScript : MonoBehaviour
     }
 
     IEnumerator StopHurting(){
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
         isHurting = false;
     }
 
